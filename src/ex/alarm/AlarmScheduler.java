@@ -2,6 +2,7 @@ package ex.alarm;
 
 import ex.alarm.driver.AlarmAlert;
 import ex.os.service.TimeService;
+import ex.alarm.ScheduleDay;
 
 public class AlarmScheduler {
 
@@ -17,36 +18,26 @@ public class AlarmScheduler {
 	}
 
 	public void wakeUp() {
-		if ((isScheduled && isTheWorkingDayAndTime())
-				|| (isScheduled && isTheDayAndTime())
-				|| (isScheduled && isAllDaysAndTime()))
+		switch (this.day) {
+		case ScheduleDay.WORKINGDAYS:
+		case ScheduleDay.ALL:
+			if (!(this.minute == timeService.getCurrentMinute()))
+				isScheduled = false;
+			break;
+
+		default:
+			if (!isTheDayAndTime())
+				isScheduled = false;
+			break;
+		}
+
+		if (isScheduled)
 			alarmAlert.startAlarm();
-	}
-	
-	private boolean isAllDaysAndTime() {
-		
-		if ((timeService.getCurrentDay() >= 0 && this.minute == timeService
-				.getCurrentMinute())
-				&& (timeService.getCurrentDay() <= 7 && this.minute == timeService
-						.getCurrentMinute()))
-			return true;
-		return false;
-	}
-	
-	private boolean isTheWorkingDayAndTime() {
-		
-		if ((timeService.getCurrentDay() > 0 && this.minute == timeService
-				.getCurrentMinute())
-				&& (timeService.getCurrentDay() < 7 && this.minute == timeService
-						.getCurrentMinute()))
-			return true;
-		return false;
 	}
 
 	private boolean isTheDayAndTime() {
-
-		return this.day == timeService.getCurrentDay()
-				&& this.minute == timeService.getCurrentMinute();
+		return ((this.day == timeService.getCurrentDay()) && (this.minute == timeService
+				.getCurrentMinute()));
 	}
 
 	public void addSchedule(int day, int minute) {
