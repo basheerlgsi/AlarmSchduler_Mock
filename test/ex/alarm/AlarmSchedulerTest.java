@@ -59,6 +59,18 @@ public class AlarmSchedulerTest {
 	}
 
 	@Test
+	public void noAlarmIfScheduledAllWorkingDaysAndDayIsAnyDayButTimeIsNotYet() throws Exception {
+		givenScheduleIsAddedAs(ScheduleDay.WORKINGDAYS, 10 * 60);
+		whent(ScheduleDay.MONDAY, 9 * 60);
+		thenAlarmShoudNotAlert();
+	}
+	@Test
+	public void noAlarmIfScheduledAllWorkingDaysAndDayIsNotWorkingDay() throws Exception {
+		givenScheduleIsAddedAs(ScheduleDay.WORKINGDAYS, 10 * 60);
+		whent(ScheduleDay.SUNDAY, 10 * 60);
+		thenAlarmShoudNotAlert();
+	}
+	@Test
 	public void noAlarmIfScheduledAllWorkingDaysAndDayIsAnyDayAndItsNotTime()
 			throws Exception {
 		givenScheduleIsAddedAs(ScheduleDay.WORKINGDAYS, 10 * 60);
@@ -67,28 +79,35 @@ public class AlarmSchedulerTest {
 	}
 
 	@Test
-	public void alarmIfScheduledAllDays() throws Exception {
+	public void alarmIfScheduledAllDaysDayIsAnydayandIsTime() throws Exception {
 		givenScheduleIsAddedAs(ScheduleDay.ALL, 10 * 60);
 		whent(ScheduleDay.MONDAY, 10 * 60);
 		thenAlarmShoudAlert();
 	}
 
 	@Test
-	public void alarmIfScheduledAllDaysAndDayIsSunday() throws Exception {
+	public void noAlarmIfScheduledAllDaysDayIsAnydayandIsNotTime() throws Exception {
 		givenScheduleIsAddedAs(ScheduleDay.ALL, 10 * 60);
-		whent(ScheduleDay.SUNDAY, 10 * 60);
-		thenAlarmShoudAlert();
+		whent(ScheduleDay.SUNDAY, 2 * 60);
+		thenAlarmShoudNotAlert();
 	}
 
 	@Test
-	public void alarmIfScheduledAllDaysAndDayIsSaturday() throws Exception {
+	public void alarmIfScheduledAllDaysDayIsNotWorkingDayAndIsTime() throws Exception {
 		givenScheduleIsAddedAs(ScheduleDay.ALL, 10 * 60);
 		whent(ScheduleDay.SATURDAY, 10 * 60);
 		thenAlarmShoudAlert();
 	}
 
 	@Test
-	public void noAlarmIfScheduledAllDaysAndItsNotTime() throws Exception {
+	public void noAlarmIfScheduledAllDaysAndDayIsNotaDay() throws Exception {
+		givenScheduleIsAddedAs(ScheduleDay.ALL, 10 * 60);
+		whent(ScheduleDay.ALL, 10 * 60);
+		thenAlarmShoudNotAlert();
+	}
+	
+	@Test
+	public void noAlarmIfScheduledAllDaysDayIsAnyDayAndItsNotTime() throws Exception {
 		givenScheduleIsAddedAs(ScheduleDay.ALL, 10 * 60);
 		whent(ScheduleDay.FRIDAY, 8 * 60);
 		thenAlarmShoudNotAlert();
@@ -140,6 +159,20 @@ public class AlarmSchedulerTest {
 		thenAlarmShoudAlert();
 	}
 
+	@Test
+	public void noAlarmIfScheduledAllWorkingDaysAndDayIsNotWorking() throws Exception {
+		givenScheduleIsAddedAs(ScheduleDay.WORKINGDAYS, 10 * 60);
+		whent(ScheduleDay.SUNDAY, 10 * 60);
+		thenAlarmShoudNotAlert();
+	}
+	
+	@Test
+	public void noAlarmIfScheduledAllWorkingDaysAndDayIsNotOfWeekDay() throws Exception {
+		givenScheduleIsAddedAs(ScheduleDay.WORKINGDAYS, 10 * 60);
+		whent(ScheduleDay.ALL, 10 * 60);
+		thenAlarmShoudNotAlert();
+	}
+	
 	@Test
 	public void noalarmIfScheduledeDayAndDayIsdifferent() throws Exception {
 		givenScheduleIsAddedAs(ScheduleDay.MONDAY, 10 * 60);

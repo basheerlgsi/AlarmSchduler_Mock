@@ -20,8 +20,15 @@ public class AlarmScheduler {
 	public void wakeUp() {
 		switch (this.day) {
 		case ScheduleDay.WORKINGDAYS:
+			if (!((timeService.getCurrentDay() > 0 && timeService
+					.getCurrentDay() < 7) && (this.minute == timeService
+					.getCurrentMinute())))
+				isScheduled = false;
+			break;
 		case ScheduleDay.ALL:
-			if (!(this.minute == timeService.getCurrentMinute()))
+			if (!((timeService.getCurrentDay() >= 0 && timeService
+					.getCurrentDay() < 7) && (this.minute == timeService
+					.getCurrentMinute())))
 				isScheduled = false;
 			break;
 
