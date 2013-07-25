@@ -19,27 +19,31 @@ public class AlarmScheduler {
 
 	public void wakeUp() {
 		switch (this.day) {
+		case ScheduleDay.MONDAY:
+		case ScheduleDay.TUESDAY:
+		case ScheduleDay.WEDNESDAY:
+		case ScheduleDay.THURSDAY:
+		case ScheduleDay.FRIDAY:
+			if (isTheDayAndTime())
+				alarmAlert.startAlarm();
+			break;
 		case ScheduleDay.WORKINGDAYS:
-			if (!((timeService.getCurrentDay() > 0 && timeService
-					.getCurrentDay() < 7) && (this.minute == timeService
-					.getCurrentMinute())))
-				isScheduled = false;
+			if ((timeService.getCurrentDay() > 0 && timeService.getCurrentDay() < 7)
+					&& (this.minute == timeService.getCurrentMinute()))
+				alarmAlert.startAlarm();
 			break;
 		case ScheduleDay.ALL:
-			if (!((timeService.getCurrentDay() >= 0 && timeService
-					.getCurrentDay() < 7) && (this.minute == timeService
-					.getCurrentMinute())))
-				isScheduled = false;
+			if ((timeService.getCurrentDay() >= 0 && timeService
+					.getCurrentDay() < 7)
+					&& (this.minute == timeService.getCurrentMinute()))
+				alarmAlert.startAlarm();
 			break;
 
 		default:
-			if (!isTheDayAndTime())
-				isScheduled = false;
+			isScheduled = false;
 			break;
 		}
 
-		if (isScheduled)
-			alarmAlert.startAlarm();
 	}
 
 	private boolean isTheDayAndTime() {
