@@ -19,22 +19,25 @@ public class AlarmScheduler {
 
 	public void wakeUp() {
 		switch (this.day) {
+		case ScheduleDay.SUNDAY:
 		case ScheduleDay.MONDAY:
 		case ScheduleDay.TUESDAY:
 		case ScheduleDay.WEDNESDAY:
 		case ScheduleDay.THURSDAY:
 		case ScheduleDay.FRIDAY:
+		case ScheduleDay.SATURDAY:
 			if (isTheDayAndTime())
 				alarmAlert.startAlarm();
 			break;
 		case ScheduleDay.WORKINGDAYS:
-			if ((timeService.getCurrentDay() > 0 && timeService.getCurrentDay() < 7)
+			if ((timeService.getCurrentDay() > ScheduleDay.SUNDAY && timeService
+					.getCurrentDay() < ScheduleDay.WORKINGDAYS)
 					&& (this.minute == timeService.getCurrentMinute()))
 				alarmAlert.startAlarm();
 			break;
 		case ScheduleDay.ALL:
-			if ((timeService.getCurrentDay() >= 0 && timeService
-					.getCurrentDay() < 7)
+			if ((timeService.getCurrentDay() >= ScheduleDay.SUNDAY && timeService
+					.getCurrentDay() < ScheduleDay.WORKINGDAYS)
 					&& (this.minute == timeService.getCurrentMinute()))
 				alarmAlert.startAlarm();
 			break;
